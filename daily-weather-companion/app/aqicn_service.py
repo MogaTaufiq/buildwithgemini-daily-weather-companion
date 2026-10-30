@@ -35,8 +35,8 @@ def get_air_quality(lat: float, lon: float) -> Dict[str, Any]:
     """
     token = os.environ.get("AQICN_TOKEN", "").strip()
     if not token or token == "PASTE_AQICN_TOKEN":
-        # Fallback to demo or inform caller if not configured
-        token = "demo"
+        # The "demo" token always returns Shanghai data, so fail loudly instead.
+        return {"error": "AQICN_TOKEN is not configured in .env. Please set a valid AQICN token."}
 
     url = f"https://api.waqi.info/feed/geo:{lat};{lon}/?token={urllib.parse.quote(token)}"
     req = urllib.request.Request(url, headers={"User-Agent": "JasHujan-DailyWeatherCompanion/1.0"})

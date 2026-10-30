@@ -14,7 +14,13 @@
 # limitations under the License.
 
 import datetime
+import os
 from zoneinfo import ZoneInfo
+
+from dotenv import load_dotenv
+
+# Load .env before the service modules below read env vars at import time.
+load_dotenv()
 
 from google.adk.agents import Agent
 from google.adk.apps import App
@@ -36,9 +42,9 @@ from app.aqicn_service import get_air_quality
 from app.openuv_service import get_uv_index
 
 MODEL = "gemini-3.8-flash"
-SANDBOX_RESOURCE_NAME = (
-    "projects/875923706037/locations/us-central1/reasoningEngines/6718961900589154304/sandboxEnvironments/3877321652479983616"
-)
+# Existing Agent Engine sandbox; code execution is disabled when unset, because
+# ADK would otherwise create a new Agent Engine on first use.
+SANDBOX_RESOURCE_NAME = os.environ.get("SANDBOX_RESOURCE_NAME")
 
 
 def get_current_time(query: str = "Jakarta") -> str:
@@ -91,8 +97,10 @@ root_agent = Agent(
         ),
     ),
     instruction=INSTRUCTION,
-    code_executor=AgentEngineSandboxCodeExecutor(
-        sandbox_resource_name=SANDBOX_RESOURCE_NAME,
+    code_executor=(
+        AgentEngineSandboxCodeExecutor(sandbox_resource_name=SANDBOX_RESOURCE_NAME)
+        if SANDBOX_RESOURCE_NAME
+        else None
     ),
     tools=[
         fetch_hourly_weather,

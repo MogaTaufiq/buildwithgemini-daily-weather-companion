@@ -7,7 +7,7 @@ import urllib.request
 from zoneinfo import ZoneInfo
 from typing import Any, Dict, Optional
 
-from app.weather_service import CITY_COORDINATES
+from app.weather_service import resolve_location, unknown_location_error
 
 
 def fetch_daylight_and_sun_times(
@@ -20,20 +20,17 @@ def fetch_daylight_and_sun_times(
 
     Args:
         city_or_location: City name (e.g. 'Jakarta', 'Bandung', 'Surabaya', 'Denpasar', 'Medan').
-        latitude: Optional explicit latitude.
-        longitude: Optional explicit longitude.
+        latitude: Optional explicit latitude. Required for cities outside the built-in list.
+        longitude: Optional explicit longitude. Required for cities outside the built-in list.
         date: Date in YYYY-MM-DD format or 'today' (default: 'today').
 
     Returns:
         A dictionary with localized sunrise, sunset, golden hour, twilight times, and daylight guidance.
     """
-    key = city_or_location.lower().strip()
-    if latitude is not None and longitude is not None:
-        lat, lon, tz_name = latitude, longitude, "Asia/Jakarta"
-    elif key in CITY_COORDINATES:
-        lat, lon, tz_name = CITY_COORDINATES[key]
-    else:
-        lat, lon, tz_name = -6.2088, 106.8456, "Asia/Jakarta"
+    location = resolve_location(city_or_location, latitude, longitude)
+    if location is None:
+        return unknown_location_error(city_or_location)
+    lat, lon, tz_name = location
 
     tz = ZoneInfo(tz_name)
     url = f"https://api.sunrise-sunset.org/json?lat={lat}&lng={lon}&date={date}&formatted=0"
