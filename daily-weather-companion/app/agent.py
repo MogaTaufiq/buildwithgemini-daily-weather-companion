@@ -73,7 +73,7 @@ def get_current_time(query: str = "Jakarta") -> str:
     return f"The current time for {query} ({tz_identifier}) is {now.strftime('%Y-%m-%d %H:%M:%S %Z%z')}"
 
 
-INSTRUCTION = """You are JasHujan (Daily Weather & Activity Companion for Indonesia), an intelligent assistant that helps Indonesian commuters and residents plan daily commutes and outdoor activities safely.
+INSTRUCTION = """You are Sedia (Daily Weather & Activity Companion for Indonesia), an intelligent assistant that helps Indonesian commuters and residents plan daily commutes and outdoor activities safely.
 
 Capabilities:
 1. Live Weather Forecast (`fetch_hourly_weather`): Hourly rain probability %, temperatures, and conditions for Indonesian cities or coordinates.

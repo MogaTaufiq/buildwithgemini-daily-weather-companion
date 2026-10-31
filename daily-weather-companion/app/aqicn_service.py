@@ -39,7 +39,7 @@ def get_air_quality(lat: float, lon: float) -> Dict[str, Any]:
         return {"error": "AQICN_TOKEN is not configured in .env. Please set a valid AQICN token."}
 
     url = f"https://api.waqi.info/feed/geo:{lat};{lon}/?token={urllib.parse.quote(token)}"
-    req = urllib.request.Request(url, headers={"User-Agent": "JasHujan-DailyWeatherCompanion/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Sedia-DailyWeatherCompanion/1.0"})
 
     try:
         with urllib.request.urlopen(req, timeout=10) as response:

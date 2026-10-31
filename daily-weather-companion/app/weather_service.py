@@ -103,7 +103,7 @@ def fetch_hourly_weather(
         f"&timezone={encoded_tz}&forecast_days=2"
     )
 
-    req = urllib.request.Request(url, headers={"User-Agent": "JasHujan-DailyWeatherCompanion/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Sedia-DailyWeatherCompanion/1.0"})
     with urllib.request.urlopen(req, timeout=10) as response:
         raw_data = json.loads(response.read().decode("utf-8"))
 
@@ -179,7 +179,7 @@ def fetch_air_quality(
         f"&timezone={encoded_tz}"
     )
 
-    req = urllib.request.Request(url, headers={"User-Agent": "JasHujan-DailyWeatherCompanion/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Sedia-DailyWeatherCompanion/1.0"})
     with urllib.request.urlopen(req, timeout=10) as response:
         raw_data = json.loads(response.read().decode("utf-8"))
 

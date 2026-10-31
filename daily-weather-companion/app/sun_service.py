@@ -35,7 +35,7 @@ def fetch_daylight_and_sun_times(
     tz = ZoneInfo(tz_name)
     url = f"https://api.sunrise-sunset.org/json?lat={lat}&lng={lon}&date={date}&formatted=0"
 
-    req = urllib.request.Request(url, headers={"User-Agent": "JasHujan-DailyWeatherCompanion/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Sedia-DailyWeatherCompanion/1.0"})
     with urllib.request.urlopen(req, timeout=10) as response:
         payload = json.loads(response.read().decode("utf-8"))
 

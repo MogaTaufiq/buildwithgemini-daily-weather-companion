@@ -75,8 +75,8 @@ app: FastAPI = get_fast_api_app(
     otel_to_cloud=otel_to_cloud,
     lifespan=lifespan,
 )
-app.title = "simple-agent"
-app.description = "API for interacting with the Agent simple-agent"
+app.title = "sedia"
+app.description = "API for interacting with the Sedia agent"
 
 
 # Proxy routes so the Vertex AI Console Playground (reasoning_engine SDK) can
