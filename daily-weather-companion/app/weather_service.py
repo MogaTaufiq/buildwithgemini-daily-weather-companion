@@ -58,6 +58,22 @@ def _get_aqi_category(us_aqi: int) -> tuple[str, str]:
         return "Berbahaya (Hazardous)", "Peringatan darurat: Kualitas udara berbahaya. Tetap di dalam ruangan."
 
 
+def resolve_location(
+    city_or_location: str, latitude: Optional[float], longitude: Optional[float]
+) -> Optional[tuple[float, float, str]]:
+    """Explicit coordinates win, else the built-in city table. None if the city is unknown."""
+    if latitude is not None and longitude is not None:
+        return latitude, longitude, "Asia/Jakarta"
+    return CITY_COORDINATES.get(city_or_location.lower().strip())
+
+
+def unknown_location_error(city_or_location: str) -> Dict[str, Any]:
+    return {
+        "error": f"Unknown location '{city_or_location}'. Retry with explicit latitude and longitude.",
+        "known_cities": sorted(CITY_COORDINATES),
+    }
+
+
 def fetch_hourly_weather(
     city_or_location: str = "Jakarta",
     latitude: Optional[float] = None,
@@ -67,19 +83,16 @@ def fetch_hourly_weather(
 
     Args:
         city_or_location: Name of the city (e.g. 'Jakarta', 'Bandung', 'Surabaya', 'Denpasar', 'Medan').
-        latitude: Optional explicit latitude. If omitted, looked up from city name.
-        longitude: Optional explicit longitude. If omitted, looked up from city name.
+        latitude: Optional explicit latitude. If omitted, looked up from city name. Required for cities outside the built-in list.
+        longitude: Optional explicit longitude. If omitted, looked up from city name. Required for cities outside the built-in list.
 
     Returns:
         A dictionary containing current weather, condition text, and the hourly forecast for the next 12 hours.
     """
-    key = city_or_location.lower().strip()
-    if latitude is not None and longitude is not None:
-        lat, lon, tz = latitude, longitude, "Asia/Jakarta"
-    elif key in CITY_COORDINATES:
-        lat, lon, tz = CITY_COORDINATES[key]
-    else:
-        lat, lon, tz = -6.2088, 106.8456, "Asia/Jakarta"
+    location = resolve_location(city_or_location, latitude, longitude)
+    if location is None:
+        return unknown_location_error(city_or_location)
+    lat, lon, tz = location
 
     encoded_tz = urllib.parse.quote(tz)
     url = (
@@ -90,7 +103,7 @@ def fetch_hourly_weather(
         f"&timezone={encoded_tz}&forecast_days=2"
     )
 
-    req = urllib.request.Request(url, headers={"User-Agent": "JasHujan-DailyWeatherCompanion/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Sedia-DailyWeatherCompanion/1.0"})
     with urllib.request.urlopen(req, timeout=10) as response:
         raw_data = json.loads(response.read().decode("utf-8"))
 
@@ -153,13 +166,10 @@ def fetch_air_quality(
     Returns:
         A dictionary with live AQI indices, particulate matter (PM2.5, PM10), pollution category, and mask/health recommendations.
     """
-    key = city_or_location.lower().strip()
-    if latitude is not None and longitude is not None:
-        lat, lon, tz = latitude, longitude, "Asia/Jakarta"
-    elif key in CITY_COORDINATES:
-        lat, lon, tz = CITY_COORDINATES[key]
-    else:
-        lat, lon, tz = -6.2088, 106.8456, "Asia/Jakarta"
+    location = resolve_location(city_or_location, latitude, longitude)
+    if location is None:
+        return unknown_location_error(city_or_location)
+    lat, lon, tz = location
 
     encoded_tz = urllib.parse.quote(tz)
     url = (
@@ -169,7 +179,7 @@ def fetch_air_quality(
         f"&timezone={encoded_tz}"
     )
 
-    req = urllib.request.Request(url, headers={"User-Agent": "JasHujan-DailyWeatherCompanion/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Sedia-DailyWeatherCompanion/1.0"})
     with urllib.request.urlopen(req, timeout=10) as response:
         raw_data = json.loads(response.read().decode("utf-8"))
 

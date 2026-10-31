@@ -1,13 +1,17 @@
 """Seed script for Daily Weather & Activity Companion (Indonesia) Firestore backend."""
 
+import os
+
+from dotenv import load_dotenv
 from google.cloud import firestore
 
-PROJECT_ID = "qwiklabs-gcp-04-7e88f957794e"
+load_dotenv()
+PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT")
 
 
 def seed_database():
     db = firestore.Client(project=PROJECT_ID)
-    print(f"Connecting to Firestore for project: {PROJECT_ID}")
+    print(f"Connecting to Firestore for project: {db.project}")
 
     # 1. Seed weather_checklists collection
     checklists = [

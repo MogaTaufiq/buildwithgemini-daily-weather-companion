@@ -49,7 +49,7 @@ def get_uv_index(lat: float, lon: float) -> Dict[str, Any]:
     headers = {
         "x-access-token": api_key,
         "Content-Type": "application/json",
-        "User-Agent": "JasHujan-DailyWeatherCompanion/1.0",
+        "User-Agent": "Sedia-DailyWeatherCompanion/1.0",
     }
 
     # 1. Fetch current UV and daily max from /api/v1/uv

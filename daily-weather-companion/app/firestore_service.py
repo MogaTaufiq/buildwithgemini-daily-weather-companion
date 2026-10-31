@@ -1,11 +1,12 @@
 """Firestore backend integration for Daily Weather & Activity Companion (Indonesia)."""
 
+import os
 from typing import Any, Dict, List, Optional
 from google.cloud import firestore
 
-PROJECT_ID = "qwiklabs-gcp-04-7e88f957794e"
+# Falls back to the ADC default project when GOOGLE_CLOUD_PROJECT is unset.
+PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT")
 
-# Initialize Firestore Client with hardcoded project ID string
 db = firestore.Client(project=PROJECT_ID)
 
 

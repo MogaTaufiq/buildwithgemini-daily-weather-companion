@@ -1,9 +1,9 @@
 [project]
 name = "daily-weather-companion"
 version = "0.1.0"
-description = "Daily Weather & Activity Companion (Indonesia)"
+description = "Sedia: daily weather and activity companion for Indonesian commuters"
 authors = [
-    {name = "Your Name", email = "your@email.com"},
+    {name = "Moga Taufiq Bagidya", email = "MogaTaufiq@users.noreply.github.com"},
 ]
 
 dependencies = [

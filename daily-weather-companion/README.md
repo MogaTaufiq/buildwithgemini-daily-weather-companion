@@ -1,12 +1,12 @@
-# simple-agent
+# Sedia agent
 
-Simple ReAct agent
+The ADK project behind Sedia, a weather and activity companion for Indonesian commuters. Architecture, configuration and roadmap are in the [root README](../README.md).
 Agent generated with `agents-cli` version `1.4.0`
 
 ## Project Structure
 
 ```
-simple-agent/
+daily-weather-companion/
 ├── app/         # Core agent code
 │   ├── agent.py               # Main agent logic
 │   ├── fast_api_app.py        # FastAPI Backend server
@@ -58,7 +58,8 @@ You can also use features from the [ADK](https://adk.dev/) CLI with `uv run adk`
 | `agents-cli eval`    | Evaluate agent behavior (generate, grade, analyze, and more — see `agents-cli eval --help`) |
 | `uv run pytest tests/unit tests/integration` | Run unit and integration tests                                                        |
 | `agents-cli deploy`  | Deploy agent to Agent Runtime                                                                |
-| `agents-cli publish gemini-enterprise` | Register deployed agent to Gemini Enterprise                    || [A2A Inspector](https://github.com/a2aproject/a2a-inspector) | Launch A2A Protocol Inspector                                                        |
+| `agents-cli publish gemini-enterprise` | Register deployed agent to Gemini Enterprise                    |
+| [A2A Inspector](https://github.com/a2aproject/a2a-inspector) | Launch A2A Protocol Inspector                                                        |
 
 ## 🛠️ Project Management
 
