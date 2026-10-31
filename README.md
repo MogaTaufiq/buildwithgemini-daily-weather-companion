@@ -29,19 +29,19 @@ It was built live at the Build with Gemini World Tour (Track 3: Agent-First Apps
 ## How it works
 
 ```mermaid
-flowchart LR
+flowchart TD
     U["User question"] --> A["Sedia agent<br/>Gemini 3.8 Flash + ADK"]
+    A -.->|optional| X["Agent Engine<br/>code sandbox"]
     A -->|picks the tools it needs| T
     subgraph T["11 tools"]
+        direction LR
         W["Open-Meteo<br/>hourly forecast"]
         Q["AQICN<br/>air quality"]
         V["OpenUV<br/>UV index"]
         S["Sunrise-Sunset<br/>daylight"]
         F[("Firestore<br/>checklists and<br/>activity profiles")]
     end
-    T --> A
-    A -.->|optional| X["Agent Engine<br/>code sandbox"]
-    A --> R["Answer with local context"]
+    T -->|structured JSON| R["Gemini combines the results<br/>into one answer with local context"]
 ```
 
 1. The message goes to one ADK agent running Gemini 3.8 Flash.
